@@ -1,7 +1,7 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 from typing import Optional, Sequence, Union
 
-from torch import Tensor
+from jittor import jt
 
 from jittordet.engine import TASK_UTILS
 from jittordet.utils import bbox2distance, distance2bbox
@@ -28,7 +28,7 @@ class DistancePointBBoxCoder(BaseBBoxCoder):
                points,
                gt_bboxes,
                max_dis: Optional[float] = None,
-               eps: float = 0.1) -> Tensor:
+               eps: float = 0.1) -> jt.Var:
         """Encode bounding box to distances.
 
         Args:
@@ -48,9 +48,9 @@ class DistancePointBBoxCoder(BaseBBoxCoder):
         return bbox2distance(points, gt_bboxes, max_dis, eps)
 
     def decode(self,
-               points: Tensor,
-               pred_bboxes: Tensor,
-               max_shape: Optional[Union[Sequence[int], Tensor,
+               points: jt.Var,
+               pred_bboxes: jt.Var,
+               max_shape: Optional[Union[Sequence[int], jt.Var,
                                          Sequence[Sequence[int]]]] = None):
         """Decode distance prediction to bounding box.
 
