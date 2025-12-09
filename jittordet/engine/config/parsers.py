@@ -31,7 +31,7 @@ def env_variable_parser(cfg):
             new_value = os.environ[var_name] if var_name in os.environ \
                 else def_value
             value = re.sub(regexp, new_value, value)
-        set_leaf(cfg, keys, value)
+            set_leaf(cfg, keys, value)
 
 
 def default_var_parser(cfg):
@@ -51,12 +51,14 @@ def default_var_parser(cfg):
         if not isinstance(value, str):
             continue
 
+        new_value = copy.copy(value)
         for k, v in support_templates.items():
             regexp = r'\<\s*' + str(k) + r'\s*\>'
             v = v.replace('\\', '/')
-            value = re.sub(regexp, v, value)
-
-        set_leaf(cfg, keys, value)
+            new_value = re.sub(regexp, v, new_value)
+        
+        if value != new_value:
+            set_leaf(cfg, keys, value)
 
 
 def tuple_parser(cfg):
