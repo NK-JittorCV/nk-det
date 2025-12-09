@@ -25,13 +25,15 @@ def env_variable_parser(cfg):
             continue
         # partial string is environment
         results = re.findall(regexp2, value)
+        _value = value
         for var_name, def_value in results:
             regexp = r'\<\s*\$' + var_name + r'\s*\:\s*' \
                 + def_value + r'\s*\>'
             new_value = os.environ[var_name] if var_name in os.environ \
                 else def_value
-            value = re.sub(regexp, new_value, value)
-            set_leaf(cfg, keys, value)
+            _value = re.sub(regexp, new_value, _value)
+        if value != _value:
+            set_leaf(cfg, keys, _value)
 
 
 def default_var_parser(cfg):
